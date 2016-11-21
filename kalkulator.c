@@ -2,6 +2,7 @@
 #include <math.h>
 #include "mesinkata.h"
 #include "stacklist.h"
+#include "check.h"
 
 #define Karakter(i) input.TabKata[(i)]
 
@@ -114,83 +115,24 @@ double proses() {
     return angka;
 }
 
-boolean checkKatax(Kata kata){
-    char cc;
-    int ci,countl=0,countr=0,i=0;;
-    Stack S;
-    infotype X;
-    CreateEmpty(&S);
-    boolean cek;
-
-    cek=true;
-    while (i<=kata.Length){
-        if ( kata.TabKata[i] == '(' || kata.TabKata[i] == ')'){
-            if (kata.TabKata[i] == '('){
-                cek=false;
-                printf("cek = false\n");
-            }else{
-                cek=true;
-                printf("cek = true\n");
-            }
-            X.val=0;
-            X.op =kata.TabKata[i];
-            Push(&S,X);
-        }
-        i++;
-    }
-    while (!(IsEmpty(S))) {
-        Pop(&S,&X);
-        if (X.op == ')'){
-            countr++;
-            printf(")\n");
-        }else if (X.op == '('){
-            countl++;
-            printf("(\n");
-        }else{
-
-        }
-    }
-    if (countl == countr){
-        if (cek == false){
-            printf("salah\n");
-            return false;
-        }else{
-            printf("bener\n");
-            return true;
-        }
-    }else{
-        printf("di sini");
-        return false;
-    }
-}
-
 int main() {
     float sum;
     infotype X;
-    int i=1;
+    i = 1;
     CreateEmpty(&S);
-    boolean check;
 
     input = InputKata();
-    check = checkKatax(input);
-
-    printf("sampai sini");      //ga sampai sini
-    if (check==true){
-        printf("masih bisa");
+    if (checkSemua(input)){
         input.Length++;
         input.TabKata[input.Length] = ')';
         X.op = '(';
         X.val = 0;
         Push(&S,X);
         sum = proses();
-        if (sum<=0 || sum>0){
-            printf("%f\n",sum);
-        }else{
-            printf("syntax error\n");
-        }
-        return 0;
+        printf("%.2f\n",sum);
     }else{
-      printf("syntax error\n");
+        printf("syntax error\n");
     }
-}
 
+    return 0;
+}
